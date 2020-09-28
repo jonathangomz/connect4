@@ -58,23 +58,49 @@ class Match {
       const isValid = this.game.makeMove(ans, player);
       if (isValid) {
         this.turn += 1;
-        this.clean();
         isWinner = this.game.isMovementWinner();
       } else {
         this.clean();
         console.log('\x1b[31m', 'Invalid movement!');
       }
 
-      if (player === this.second_player)
+      if (player === this.second_player) {
         this.round += 1;
+      }
 
       if (isWinner) {
-        console.log(`\x1b[32m The player ${this.game.config.getColorForPlayer(player)}\x1b[32m is the winner!\x1b[0m`);
+        console.log(this.winScreen(player));
         this.initMatch();
       }
-      else
+      else {
+        this.clean();
         this.turnPlayer();
+      }
     });
+  }
+
+  winScreen(player) {
+    const c = `${this.game.config.getColorForPlayer(player)}\x1b`;
+
+    let _________color__________ = '';
+    for(const i of [,,,,,,,,,]){
+      _________color__________ += c;
+    }
+    _________color__________ += '    \x1b[32m'
+    
+    const screen = `
+\x1b[32m
+>>>>>>>>>>>>> ·|· WIN ·|· <<<<<<<<<<<<<
+|||||||||||||||||||||||||||||||||||||||
+||                                   ||
+||    ${_________color__________}    ||
+||    ${_________color__________}    ||
+||    ${_________color__________}    ||
+||                                   ||
+|||||||||||||||||||||||||||||||||||||||
+\x1b[0m`;
+
+  return screen;
   }
 }
 
