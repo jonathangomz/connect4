@@ -36,13 +36,14 @@ class Match {
   startGame() {
     this.round = 0;
     this.turn = 0;
+    this.clean();
     this.game.initBoard();
     this.turnPlayer();
   }
 
   turnPlayer() {
     console.log('');
-    console.log('\x1b[33m', `>>>>>> |· Round #${this.round} ·|· Turn #${this.turn} <<<<<<`);
+    console.log('\x1b[33m', `>>>>>>> |· Round #${this.round} ·|· Turn #${this.turn} <<<<<<<`);
     if (this.turn % 2 === 0) {
       this.playerMove(this.first_player);
     } else {
@@ -52,22 +53,25 @@ class Match {
 
   playerMove(player) {
     this.game.printBoard();
-    this.rl.question(`\x1b[34m Player [\x1b[37m${player}\x1b[34m] >> Which column? `, (ans) => {
+    this.rl.question(`\x1b[0m Player [${this.game.config.getColorForPlayer(player)}] >> Which column? `, (ans) => {
       let isWinner;
-      if (this.game.isValidColumn(ans)) {
-        isWinner = this.game.makeMove(ans, player);
+      const isValid = this.game.makeMove(ans, player);
+      if (isValid) {
         this.turn += 1;
         this.clean();
+        isWinner = this.game.isMovementWinner();
       } else {
         this.clean();
-        console.log('\x1b[31m', 'Invalid Column!');
+        console.log('\x1b[31m', 'Invalid movement!');
       }
 
       if (player === this.second_player)
         this.round += 1;
 
-      if (isWinner)
+      if (isWinner) {
+        console.log(`\x1b[32m The player ${this.game.config.getColorForPlayer(player)}\x1b[32m is the winner!\x1b[0m`);
         this.initMatch();
+      }
       else
         this.turnPlayer();
     });

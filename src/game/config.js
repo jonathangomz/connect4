@@ -2,13 +2,14 @@ class Connect4Config {
   rows = 6;
   cols = 7;
   roundsLimit;
-  tokenForEmptyCell = ' ';
-  tokenForFirstPlayer = 'O';
-  tokenForSecondPlayer = 'X';
+  tokenForEmptyCell = '   ';
+  colorForFirstPlayer = '\x1b[44m   \x1b[0m';
+  colorForSecondPlayer = '\x1b[45m   \x1b[0m';
 
-  getTokenForPlayer(player) {
-    if (player === 1) return this.tokenForFirstPlayer;
-    else return this.tokenForSecondPlayer;
+  getColorForPlayer(player) {
+    if (player === 1) return this.colorForFirstPlayer;
+    else if(player === 2) return this.colorForSecondPlayer;
+    else return this.tokenForEmptyCell;
   }
 }
 
