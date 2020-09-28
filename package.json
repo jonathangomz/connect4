@@ -1,5 +1,5 @@
 {
-  "name": "connect4",
+  "name": "@jonathangomz/connect4",
   "version": "0.1.0-beta",
   "description": "Connect4 Game",
   "main": "index.js",
