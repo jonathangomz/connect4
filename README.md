@@ -1,8 +1,9 @@
 ## Connect4
-> A Connect4 game for cli
+A Connect4 game for cli
 
 ## Installation
-***WARNING**: You need to have installed nodejs*
+> [!IMPORTANT]
+> You need to have installed nodejs
 
 **npm:**
 ```bash
