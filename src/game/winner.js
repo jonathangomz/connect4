@@ -38,22 +38,25 @@ class WinnerValidator {
   static haveWinnerConsecutives(arr) {
     if(!Array.isArray(arr)) throw 'Not an array';
     
-    let consecutive_equals = 1;
-    let current_token;
-    for(const item of arr) {
-      if(item === this.tokenForEmpty) {
+    let consecutiveTokens = 0;
+    let currentToken;
+    for(const token of arr) {
+      if(token === this.tokenForEmpty) {
+        // If is empty token reset count
+        consecutiveTokens = 0;
         continue;
-      }
-      if(item === current_token) {
-        consecutive_equals += 1;
-      }
-      else {
-        current_token = item;
-        consecutive_equals = 1;
-      }
-      
-      if(consecutive_equals === this.consecutiveToWin) {
+      } else {
+        if(token === currentToken) {
+          consecutiveTokens += 1;
+          // Check if have enough consecutives tokens
+          if(consecutiveTokens === this.consecutiveToWin) {
             return true;
+          }
+        } else {
+          // If is a different token start counting
+          consecutiveTokens = 1;
+          currentToken = token;
+        }
       }
     }
     return false;
