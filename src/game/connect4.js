@@ -15,6 +15,9 @@ class Connect4 {
     this.config = config;
   }
 
+  /**
+   * Load a new clean board
+   */
   initBoard() {
     console.log('\x1b[37m', '---------------New game----------------');
 
@@ -85,14 +88,14 @@ class Connect4 {
     console.log('\x1b[36m', indexes);
     console.log('\x1b[36m', separator);
 
-    let lastIndex = this.board.length - 1;
+    let lastIndex = 0;
     for (const row of this.board) {
       let formatted_row = '';
       for (const column of row) {
         formatted_row += `|\x1b[34m${this.config.getColorForPlayer(column)}\x1b[36m|`;
       }
       formatted_row += `\x1b[36m·${lastIndex}·|`;
-      lastIndex -= 1;
+      lastIndex += 1;
       console.log('\x1b[36m', formatted_row);
     }
   }
