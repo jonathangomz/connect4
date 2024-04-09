@@ -75,16 +75,22 @@ class Match {
       let isWinner;
       const isValid = this.game.makeMove(ans, player);
       if (isValid) {
+        // Change the turn
         this.turn += 1;
+
+        // If it is the move of the second player then increment the round
+        if (player === this.second_player) {
+          this.round += 1;
+        }
+
         this.clean();
+
+        // Check if is a winner move
         isWinner = this.game.isMovementWinner();
       } else {
         this.clean();
         console.log('\x1b[31m', 'Invalid movement!');
       }
-
-      if (player === this.second_player)
-        this.round += 1;
 
       if (isWinner) {
         console.log(`\x1b[32m The player ${this.game.config.getColorForPlayer(player)}\x1b[32m is the winner!\x1b[0m`);
