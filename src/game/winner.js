@@ -12,7 +12,7 @@ class WinnerValidator {
     this.tokenForEmpty = tokenForEmpty;
     this.consecutiveToWin = consecutiveToWin;
 
-    return (this.winnerOnRow || this.winnerOnColumn || this.winnerOnDiagonal);
+    return (this.winnerOnRow || this.winnerOnColumn || this.winnerOnDiagonal || this.winnerOnInvertedDiagonal);
   }
 
   static get winnerOnRow() {
@@ -28,6 +28,11 @@ class WinnerValidator {
   static get winnerOnDiagonal() {
     const currentDiagonal = this.generateArrayFromDiagonal();
     return this.haveWinnerConsecutives(currentDiagonal);
+  }
+
+  static get winnerOnInvertedDiagonal() {
+    const currentInvertedDiagonal = this.generateArrayFromInvertedDiagonal();
+    return this.haveWinnerConsecutives(currentInvertedDiagonal);
   }
 
   static haveWinnerConsecutives(arr) {
@@ -48,7 +53,7 @@ class WinnerValidator {
       }
       
       if(consecutive_equals === this.consecutiveToWin) {
-        return true;
+            return true;
       }
     }
     return false;
@@ -98,6 +103,40 @@ class WinnerValidator {
     }
 
     return diagonalArray;
+  }
+
+  static generateArrayFromInvertedDiagonal() {
+    let invertedDiagonalArray = new Array();
+
+    let initialRow = this.currentRow;
+    let initialCol = this.currentColumn;
+
+    if (this.currentColumn === 0 || this.currentRow === 0) {
+      // If is last row or last column then already are the initial values
+      initialRow = this.currentRow;
+      initialCol = this.currentColumn;
+    } else {
+      // Distance between the first column to the current column
+      let distanceColumn = this.currentColumn;
+
+      // Distance between the first row to the current row
+      let distanceRow = this.currentRow;
+
+      // Get the shortest distance
+      // If is equal then it doesn't matter
+      let shortestDistance = distanceRow >= distanceColumn ? distanceColumn : distanceRow;
+
+      // Use the shortest distance to calculate the initial row and column for the diagonal
+      initialRow = this.currentRow - shortestDistance;
+      initialCol = this.currentColumn - shortestDistance;
+    }
+
+    // Get the array from the diagonal
+    for (let row = initialRow, col = initialCol; (row < this.board.length && col < this.board[this.currentRow].length); row++, col++) {
+      invertedDiagonalArray.push(this.board[row][col]);
+    }
+
+    return invertedDiagonalArray;
   }
 }
 
