@@ -92,7 +92,6 @@ class WinnerValidator {
       initialCol = this.currentColumn - shortestDistance;
     }
 
-    console.log(initialRow, initialCol);
     // Get the array from the diagonal
     for (let row = initialRow, col = initialCol; (row >= 0 && col < this.board[this.currentRow].length); row--, col++) {
       diagonalArray.push(this.board[row][col]);
