@@ -3,6 +3,8 @@ class Connect4Config {
   cols = 7;
   roundsLimit;
   tokenForEmptyCell = '   ';
+  firstPlayerToken = 1;
+  secondPlayerToken = 2;
   colorForFirstPlayer = '\x1b[44m   \x1b[0m';
   colorForSecondPlayer = '\x1b[45m   \x1b[0m';
 

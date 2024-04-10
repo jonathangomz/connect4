@@ -12,7 +12,8 @@
   "author": "jonathangomz",
   "license": "ISC",
   "dependencies": {
-    "commander": "^6.1.0"
+    "commander": "^6.1.0",
+    "socket.io-client": "^4.7.5"
   },
   "preferGlobal": true,
   "bin": {
