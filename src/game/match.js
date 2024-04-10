@@ -20,20 +20,53 @@ class Match {
   }
 
   /**
-   * Initialize a new match
+   * Initialize a new local match
    */
-  initMatch() {
-    this.rl.question(' Do you wanna start a new game? [Y]/n', (ans) => {
+  initLocalMatch() {
+    this.rl.question('Do you wanna start a new game? [Y]/n', (ans) => {
       if (ans.toLowerCase() === 'n')
-      // TODO: Do something with the remote player
         this.rl.close();
       else {
-        // Generate random uuid
-        const matchId = 'privateId';
-        this.startConnection(matchId);
-        // this.startGame();
+        this.startGame();
       }
     });
+  }
+
+  /**
+   * Initialize a new online match
+   */
+  initOnlineMatch() {
+    // If already is connected start a new match with the same remote player
+    if(this.online && this.online.socket.connected) {
+      this.rl.question('Do you wanna start a rematch? [Y]/n', (ans) => {
+        if (ans.toLowerCase() === 'n')
+        // TODO: Do something with the remote player
+          this.rl.close();
+        else {
+          // TODO: Check how to validate remote player answer
+          this.startGameOnline();
+        }
+      });
+    } else {
+      this.rl.question('Do you wanna start a new online game? [Y]/n', (ans) => {
+        if (ans.toLowerCase() === 'n')
+        // TODO: Do something with the remote player
+          this.rl.close();
+        else {
+          // Generate random uuid
+          const matchId = 'privateId';
+          this.startConnection(matchId);
+          // this.startGame();
+        }
+      });
+    }
+  }
+
+  /**
+   * Initialize a new online match
+   */
+  joinOnlineMatch(matchId) {
+    this.startConnection(matchId);
   }
 
   /**
@@ -85,6 +118,7 @@ class Match {
 
         // If there is not second player wait for a second player to connect
         if(!this.second_player) {
+          console.log(`Send the match id to the other player. MatchID = [${this.online.matchId}]`);
           console.log('Waiting for second player...');
 
           // Listen for second player
@@ -171,12 +205,14 @@ class Match {
     let isWinner; 
     const isValid = this.game.makeMove(column, player);
     if (isValid) {
-      if(player === this.online.localPlayerId) {
-        // If is local player send the movement to the remote player
-        await this.online.sendMove(column);
-      } else {
-        // If is the remove player remove the listener to avoid redundancy
-        this.online.socket.removeAllListeners(this.online.matchId);
+      if(this.online) {
+        if(player === this.online.localPlayerId) {
+          // If is local player send the movement to the remote player
+          await this.online.sendMove(column);
+        } else {
+          // If is the remove player remove the listener to avoid redundancy
+          this.online.socket.removeAllListeners(this.online.matchId);
+        }
       }
 
       // Change the turn
@@ -198,7 +234,12 @@ class Match {
 
     if (isWinner) {
       console.log(`\x1b[32m The player ${this.game.config.getColorForPlayer(player)}\x1b[32m is the winner!\x1b[0m`);
-      this.initMatch();
+
+      if(this.online) {
+        this.initOnlineMatch();
+      } else {
+        this.initLocalMatch();
+      }
     }
     else {
       if(this.online) {

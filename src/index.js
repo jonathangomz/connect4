@@ -2,13 +2,32 @@
 const program = require('commander');
 const Match = require('./game');
 
-program.version(require('../package.json').version);
+program
+  .name('connect4')
+  .version(require('../package.json').version);
+
 program
   .command('start')
   .description('Start a Connect4 Game')
-  .action(() => {
+  .option('-j, --join-match <type>', 'match id to join')
+  .option('-o, --online', 'create online match')
+  .action((options) => {
+    const onlineMatchId = options.joinMatch;
+    const online = options.online;
+
+    if(online && onlineMatchId) {
+      console.log('error: options \'--join-match && --online\' can\'t be mixed');
+      return;
+    }
+
     const match = new Match();
-    match.initMatch();
+    if(onlineMatchId) {
+      match.joinOnlineMatch(onlineMatchId);
+    } else if (online) {
+      match.initOnlineMatch();
+    }else {
+      match.initLocalMatch();
+    }
   });
 
 program.parse(process.argv);
