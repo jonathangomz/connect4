@@ -116,7 +116,10 @@ class Match {
     this.round = 0;
     this.turn = 0;
     this.clean();
-    this.game.initBoard();
+    this.game.initBoard({
+      firstPlayerToken: this.first_player,
+      secondPlayerToken: this.second_player,
+    });
     this.turnPlayerOnline();
   }
 
@@ -125,7 +128,6 @@ class Match {
    */
   turnPlayerOnline() {
     const currentPlayer = this.turn % 2 === 0 ? this.first_player : this.second_player;
-    const currentPlayerToken = this.turn % 2 === 0 ? 1 : 2;
 
     console.log('');
     console.log('\x1b[33m', `>>>>>>> |· Round #${this.round} ·|· Turn #${this.turn} ·|· Online ·|· Current player [${currentPlayer}] <<<<<<<`);
@@ -133,7 +135,7 @@ class Match {
     this.game.printBoard();
 
     if (currentPlayer === this.online.localPlayerId) {
-      this.rl.question(`\x1b[0m Player [${this.game.config.getColorForPlayer(currentPlayerToken)}] >> Which column? `, async (playerInput) => {
+      this.rl.question(`\x1b[0m Player [${this.game.config.getColorForPlayer(currentPlayer)}] >> Which column? `, async (playerInput) => {
         await this.playerMove(playerInput, currentPlayer);
       });
     } else {

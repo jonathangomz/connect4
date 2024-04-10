@@ -18,7 +18,13 @@ class Connect4 {
   /**
    * Load a new clean board
    */
-  initBoard() {
+  initBoard(tokens) {
+    // Change tokens if provided
+    if(tokens) {
+      this.config.firstPlayerToken = tokens.firstPlayerToken;
+      this.config.secondPlayerToken = tokens.secondPlayerToken;
+    }
+
     console.log('\x1b[37m', '---------------New game----------------');
 
     let new_board = [];
