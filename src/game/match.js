@@ -137,7 +137,7 @@ class Match {
         await this.playerMove(playerInput, currentPlayer);
       });
     } else {
-      console.log('\x1b[33m', `>>>>>>> Waiting the remote player <<<<<<<`);
+      console.log('\x1b[33m', `>>>>>>> Waiting for the remote player's movement <<<<<<<`);
       this.online.socket.on(this.online.matchId, async (move) => {
         await this.playerMove(move.column, move.player);
       });
