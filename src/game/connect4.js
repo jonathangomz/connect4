@@ -44,10 +44,16 @@ class Connect4 {
     if(player < 1 || 3 < player) throw 'Only can be player 1 or 2';
     
     let isValidMovement = true;
-    if(!this.isValidColumn(column)) return isValidMovement = false;
+
+    // Validate that column is a number and that is inside the board's limits
+    if(!this.isValidColumn(column)) {
+      return isValidMovement = false;
+    } else {
+      column = Number.parseInt(column);
+    }
 
     for (let row = 0; row < this.board.length; row++) {
-      if (this.board[row][column] !== this.config.tokenForEmptyCell) {
+      if(this.board[row][column] !== this.config.tokenForEmptyCell) {
         if(!this.isValidRow(row - 1)) {
           console.log('\x1b[31m The column is full!');
           isValidMovement = false;
@@ -59,7 +65,7 @@ class Connect4 {
           this.board[this.lastRow][this.lastCol] = player;
           break;
         }
-      }else if(row === this.board.length-1) {
+      } else if(row === this.board.length - 1) {
         this.lastRow = row;
         this.lastCol = column;
         this.board[this.lastRow][this.lastCol] = player;
@@ -73,11 +79,11 @@ class Connect4 {
     return isValidMovement;
   }
 
-  isValidColumn(column) {
+    isValidColumn(column) {
     return (!isNaN(column) && (0 <= column && column < this.board[0].length));
   }
 
-  isValidRow(row) {
+    isValidRow(row) {
     return (!isNaN(row) && (0 <= row && row < this.board.length));
   }
 
@@ -108,7 +114,9 @@ class Connect4 {
 
   isMovementWinner(row = this.lastRow, col = this.lastCol) {
     let isWinner = false;
-    if(row && col) {
+
+    // Compare directly against undefined because 0 is a valid value but is a falsy value
+    if(row !== undefined && col !== undefined) {
       isWinner = winnerValidator.winnerMovement({
         board: this.board,
         lastRow: row,
