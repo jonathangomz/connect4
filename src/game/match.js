@@ -1,4 +1,5 @@
 const readline = require('readline');
+const { v1: uuidv1 } = require('uuid');
 const connect4 = require('./connect4');
 
 const OnlineMatch = require('./online');
@@ -53,8 +54,7 @@ class Match {
         // TODO: Do something with the remote player
           this.rl.close();
         else {
-          // Generate random uuid
-          const matchId = 'privateId';
+          const matchId = uuidv1();
           this.startConnection(matchId);
           // this.startGame();
         }
