@@ -12,20 +12,19 @@ program
   .option('-j, --join-match <type>', 'match id to join')
   .option('-o, --online', 'create online match')
   .action((options) => {
-    const onlineMatchId = options.joinMatch;
-    const online = options.online;
+    const { online, onlineMatchId } = options;
 
-    if(online && onlineMatchId) {
+    if (online && onlineMatchId) {
       console.log('error: options \'--join-match && --online\' can\'t be mixed');
       return;
     }
 
     const match = new Match();
-    if(onlineMatchId) {
+    if (onlineMatchId) {
       match.joinOnlineMatch(onlineMatchId);
     } else if (online) {
       match.initOnlineMatch();
-    }else {
+    } else {
       match.initLocalMatch();
     }
   });
