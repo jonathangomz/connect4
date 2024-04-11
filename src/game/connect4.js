@@ -79,11 +79,21 @@ class Connect4 {
     return isValidMovement;
   }
 
-    isValidColumn(column) {
+  /**
+   * Return if column is a valid number and if is a valid option within the board's limits
+   * @param {any} column column value
+   * @returns true or false
+   */
+  isValidColumn(column) {
     return (!isNaN(column) && (0 <= column && column < this.board[0].length));
   }
 
-    isValidRow(row) {
+  /**
+   * Return if row is a valid number and if is a valid option within the board's limits
+   * @param {any} row column value
+   * @returns true or false
+   */
+  isValidRow(row) {
     return (!isNaN(row) && (0 <= row && row < this.board.length));
   }
 
